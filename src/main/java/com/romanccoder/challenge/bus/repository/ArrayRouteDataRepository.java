@@ -49,12 +49,13 @@ public class ArrayRouteDataRepository implements RouteDataRepository {
     @Override
     public boolean hasDirectRoute(int departureId, int arrivalId) {
         IntHashSet arrivalIds = stationData.get(departureId);
+        IntHashSet arrivalIdsReversed = stationData.get(arrivalId);
 
         // If such departure doesn't exist at all
-        if (arrivalIds == null) {
+        if (arrivalIds == null && arrivalIdsReversed == null) {
             return false;
         }
 
-        return arrivalIds.contains(arrivalId);
+        return (arrivalIds != null && arrivalIds.contains(arrivalId)) || (arrivalIdsReversed != null && arrivalIdsReversed.contains(departureId));
     }
 }
